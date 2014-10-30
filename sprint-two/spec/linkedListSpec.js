@@ -51,5 +51,20 @@ describe('linkedList', function() {
     expect(linkedList.contains(4)).to.equal(false);
   });
 
+  it('should be able to recreate a list with an empty state', function(){
+    linkedList.addToTail(4);
+    linkedList.addToTail(5);
+    expect(linkedList.head.value).to.equal(4);
+    linkedList.removeHead();
+    expect(linkedList.head.value).to.equal(5);
+    linkedList.removeHead();
+    linkedList.addToTail(6);
+    linkedList.addToTail(7);
+    expect(linkedList.contains(6)).to.equal(true);
+    expect(linkedList.contains(7)).to.equal(true);
+    expect(linkedList.contains(5)).to.equal(false);
+    expect(linkedList.contains(4)).to.equal(false);
+  });
+
   // add more tests here to test the functionality of linkedList
 });
