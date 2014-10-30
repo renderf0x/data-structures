@@ -9,17 +9,17 @@ var makeSet = function(){
 var setPrototype = {};
 
 setPrototype.add = function(item){ //addToTail
-  if(this.set.head === null){
-    this.set.head = this.set.tail = this.makeNode(item);
-  } else {
-    var tempNode = this.set.tail;
-    this.set.tail = this.makeNode(item);
-    tempNode.next = this.set.tail;
+  if(this.head === null){
+    this.head = this.tail = this.makeNode(item);
+  } else if (this.contains(item) === false){
+    var tempNode = this.tail;
+    this.tail = this.makeNode(item);
+    tempNode.next = this.tail;
   }
 };
 
 setPrototype.contains = function(item){
-  var node = this.set.head;
+  var node = this.head;
   while(node !== null){
     if(node.value === item){
       return true;
@@ -30,11 +30,20 @@ setPrototype.contains = function(item){
 };
 
 setPrototype.remove = function(item){
-  var node = this.set.head;
+  var node = this.head;
+  if (node.value === item){
+    node.value = null;
+    this.head = node.next;
+    return;
+  }
+  var prevNode = node;
+  node = prevNode.next;
   while(node !== null){
     if (node.value === item){
-
+      prevNode.next = node.next;
+      node.value = null;
     }
+    node = node.next;
   }
 };
 
