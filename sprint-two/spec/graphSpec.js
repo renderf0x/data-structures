@@ -20,9 +20,27 @@ describe('graph', function() {
     expect(graph.contains('kittens')).to.equal(true);
   });
 
+  it('should not return false positives!', function() {
+    graph.addNode('kittens');
+    expect(graph.contains('badgers')).to.equal(false);
+  });
+
+  it('should get nodes from value', function() {
+    graph.addNode('kittens');
+    var node = graph.getNode('kittens');
+    expect(node.value).to.equal('kittens');
+  });
+
   it('should remove nodes that were inserted', function() {
     graph.addNode('puppies');
     graph.removeNode('puppies');
+    expect(graph.contains('puppies')).to.equal(false);
+  });
+
+  it('should not add a third node without node-friend', function() {
+    graph.addNode('alpacas');
+    graph.addNode('wombats');
+    graph.addNode('puppies');
     expect(graph.contains('puppies')).to.equal(false);
   });
 
@@ -30,6 +48,14 @@ describe('graph', function() {
     graph.addNode('puppies');
     graph.addNode('kittens');
     expect(graph.getEdge('puppies', 'kittens')).to.equal(true);
+  });
+
+  it('should add edge between existing nodes', function() {
+    graph.addNode('alpacas');
+    graph.addNode('wombats');
+    graph.addNode('wombats', 'narwhals');
+    graph.addEdge('alpacas', 'narwhals');
+    expect(graph.getEdge('alpacas', 'narwhals')).to.equal(true);
   });
 
   it('should create edges between two nodes', function() {
