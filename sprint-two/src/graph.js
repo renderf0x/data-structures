@@ -24,10 +24,17 @@ Graph.prototype.addNode = function(newNode, toNode){
     this.addEdge(node, this.firstNode);
     this.nodeCount++;
   } else {
-    // TODO maybe be sad when only one input
+    if (!toNode){
+      return;
+    }
     var node = this.makeNode(newNode);
-    // TODO get toNode node
-    this.addEdge(node.value, toNode);
+    toNode = this.getNode(toNode);
+
+    var success = this.addEdge(node, toNode);
+    if (!success){
+      return;
+    }
+
     this.nodeCount++;
   }
 };
@@ -63,20 +70,46 @@ Graph.prototype.removeNode = function(node){
 };
 
 Graph.prototype.getEdge = function(fromNode, toNode){
+  var node = this.getNode(fromNode);
+  if (!node){
+    return false;
+  }
+
+  for (var i = 0; i < node.edges.length; i++){
+    if (node.edges[i].value === toNode){
+      return true;
+    }
+  }
+
+  return false;
 };
 
 Graph.prototype.addEdge = function(fromNode, toNode){
   if (typeof fromNode === "string"){
-    // TYPE conversion nightmare!
     fromNode = this.getNode(fromNode);
     toNode = this.getNode(toNode);
   }
 
+  if (!fromNode || !toNode){
+    return false;
+  }
+
   fromNode.edges.push(toNode);
   toNode.edges.push(fromNode);
+
+  return true;
 };
 
 Graph.prototype.removeEdge = function(fromNode, toNode){
+  if (typeof fromNode === "string"){
+    fromNode = this.getNode(fromNode);
+    // TODO optimize later
+    toNode = this.getNode(toNode);
+  }
+
+
+
+
 };
 
 /*

@@ -53,7 +53,7 @@ describe('graph', function() {
   it('should add edge between existing nodes', function() {
     graph.addNode('alpacas');
     graph.addNode('wombats');
-    graph.addNode('wombats', 'narwhals');
+    graph.addNode('narwhals', 'wombats');
     graph.addEdge('alpacas', 'narwhals');
     expect(graph.getEdge('alpacas', 'narwhals')).to.equal(true);
   });
