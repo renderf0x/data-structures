@@ -1,9 +1,6 @@
 var Graph = function(){
-  var obj = Object.create(Graph.prototype);
-  obj.firstNode = null;
-  obj.nodeCount = 0;
-
-  return obj;
+  this.firstNode = null;
+  this.nodeCount = 0;
 };
 
 Graph.prototype.makeNode = function(value){
@@ -43,6 +40,10 @@ Graph.prototype.getNode = function(nodeVal){
   var visitedNodes = [];
   var result = null;
 
+  if (!this.firstNode){
+    return null;
+  }
+
   var search = function(node){
     if (node.value === nodeVal){
       result = node;
@@ -67,6 +68,19 @@ Graph.prototype.contains = function(node){
 };
 
 Graph.prototype.removeNode = function(node){
+  node = this.getNode(node);
+
+  if (!node.edges.length){
+    node.edges = null;
+    node.value = null;
+    this.nodeCount--;
+    this.firstNode = null;
+    return;
+  }
+
+  for (var i = 0; i < node.edges.length; i++){
+    this.removeEdge(node.edges[i].value, node.value);
+  }
 };
 
 Graph.prototype.getEdge = function(fromNode, toNode){
@@ -103,13 +117,42 @@ Graph.prototype.addEdge = function(fromNode, toNode){
 Graph.prototype.removeEdge = function(fromNode, toNode){
   if (typeof fromNode === "string"){
     fromNode = this.getNode(fromNode);
-    // TODO optimize later
-    toNode = this.getNode(toNode);
   }
 
+  for (var i = 0; i < fromNode.edges.length; i++){
+    if (fromNode.edges[i].value === toNode){
+      toNode = fromNode.edges[i];
+      for (var j = 0; j < toNode.edges.length; j++){
+        if (toNode.edges[j].value === fromNode.value){
+          var temp = toNode.edges.slice(0, j);
+          temp.concat(toNode.edges.slice(j + 1, toNode.edges.length));
+          toNode.edges = temp;
+        }
+        break;
+      }
 
+      var temp = fromNode.edges.slice(0, i);
+      temp.concat(fromNode.edges.slice(i + 1, fromNode.edges.length));
+      fromNode.edges = temp;
+      break;
+    }
+    // TEST if no edge between nodes
+    // exit
 
-
+  }
+  //deletion area
+  if (fromNode.edges.length === 0){
+    fromNode.value = null;
+    this.nodeCount--;
+  }
+  if (toNode.edges.length === 0){
+    toNode.value = null;
+    this.nodeCount--;
+  }
+  if (this.nodeCount === 0){
+    this.firstNode = null;
+  }
+  // TODO if node count === 0
 };
 
 /*

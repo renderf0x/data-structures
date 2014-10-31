@@ -1,6 +1,7 @@
 var HashTable = function(){
   this._limit = 8;
   this._storage = makeLimitedArray(this._limit);
+  this.counter = 0;
   // limited array has the following methods:
   // set(i,v)
   // get(i)
@@ -9,11 +10,17 @@ var HashTable = function(){
 };
 
 HashTable.prototype.insert = function(k, v){
+  if ((this.counter / this._limit) >= 0.75){
+    this.resize(this._limit * 2);
+  } else if ((this.counter / this._limit) <= 0.25){
+    this.resize(this._limit / 2);
+  }
   var item = {key : k, value : v};
   var hash = getIndexBelowMaxForKey(k, this._limit);
   var contents = this._storage.get(hash) || [];
   contents.push(item);
   this._storage.set(hash, contents);
+  counter++;
 };
 
 HashTable.prototype.retrieve = function(k){
@@ -44,6 +51,7 @@ HashTable.prototype.remove = function(k){
       var temp = contents.slice(0, i);
       contents = temp.concat(contents.slice(i+1, contents.length));
       this._storage.set(hash, contents);
+      this.counter--;
       return;
     }
   }
