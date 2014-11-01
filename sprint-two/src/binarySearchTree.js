@@ -39,6 +39,23 @@ makeBinarySearchTree.prototype.contains = function(value) {
 
 makeBinarySearchTree.prototype.depthFirstLog = function(callback) {
   // body...
+  // what we want: run the function on each item in proper depth first order
+  // input: a binary tree
+  // output: no ouput
+  //
+  // execute callback on self
+  callback(this.value);
+  // try left first
+  if (this.left){
+    // if left, recurse
+    this.left.depthFirstLog(callback);
+  }
+  // try right
+  if (this.right){
+  //   if right recurse
+    this.right.depthFirstLog(callback);
+  }
+  //
 };
 
 
