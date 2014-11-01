@@ -58,6 +58,28 @@ makeBinarySearchTree.prototype.depthFirstLog = function(callback) {
   //
 };
 
+makeBinarySearchTree.prototype.breadthFirstLog = function(callback){
+  if (!this.left && !this.right){
+    callback(this.value);
+    return;
+  }
+
+  var queue = makeQueue();
+  var temp = this;
+
+  do{
+    callback(temp.value);
+    if (temp.left){
+      queue.enqueue(temp.left);
+    }
+    if (temp.right){
+      queue.enqueue(temp.right);
+    }
+
+    temp = queue.dequeue();
+  } while(queue.size() > 0);
+  callback(temp.value);
+}
 
 
 /*

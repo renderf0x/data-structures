@@ -44,7 +44,7 @@ describe('binarySearchTree', function() {
     expect(array).to.eql([5,2,3]);
   });
 
-    it('should use "depthFirstLog" on a more complete tree', function(){
+  it('should use "depthFirstLog" on a more complete tree', function(){
     var array = [];
     var func = function(value){ array.push(value); };
     bst2 = makeBinarySearchTree(14);
@@ -60,6 +60,24 @@ describe('binarySearchTree', function() {
     bst2.depthFirstLog(func);
     console.log(array);
     expect(array).to.eql([14,7,3,5,4,10,22,30,27,31]);
+  });
+
+  it('should use correct order for "breadthFirstLog" ', function(){
+    var array = [];
+    var func = function(value){ array.push(value); };
+    bst2 = makeBinarySearchTree(14);
+    bst2.insert(7);
+    bst2.insert(10);
+    bst2.insert(3);
+    bst2.insert(5);
+    bst2.insert(4);
+    bst2.insert(22);
+    bst2.insert(30);
+    bst2.insert(31);
+    bst2.insert(27);
+    bst2.breadthFirstLog(func);
+    console.log(array);
+    expect(array).to.eql([14,7,22,3,10,30,5,27,31,4]);
   });
 
 
